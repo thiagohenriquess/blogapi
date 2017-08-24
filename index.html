@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="blogsApi">
+  <head>
+    <title>Blog Viral</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <script src="lib/angular-1.6.5.js"></script>
+    <script src="js/jquery.js"></script>
+    <script>
+      angular.module("blogsApi",[]);
+      angular.module("blogsApi").controller("blogsApiController", function($scope, $http){
+        $scope.titulo = "Hello World!";
+        $scope.posts = [];
+
+        $scope.adicionarPost = function(post){
+          /*$scope.posts.push(angular.copy(post));*/
+          $http.post("http://arcane-cliffs-64588.herokuapp.com/post", post).then(function (response) {
+            console.log(response.status);
+            carregarPosts();
+            delete $scope.post;
+          });          
+        };
+
+        var carregarPosts = function(){
+          $http.get("http://arcane-cliffs-64588.herokuapp.com/post").then(function (response) {
+            $scope.posts = response.data;
+            console.log(response.data);
+          });   
+        };
+
+        carregarPosts();
+      });              
+     </script>
+  </head>
+  <body ng-controller="blogsApiController">
+    <div class="jumbotron">
+      <h1 ng-bind="titulo"></h1>
+    </div>
+    <div class="container">
+      <div class="col">
+        <div class="row">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Titulo</th>
+                <th>Data de Publicacao</th>
+                <th>texto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="post in posts">
+                <td>{{post.titulo}}</td>
+                <td>{{post.dataPublicacao}}</td>
+                <td>{{post.texto}}</td>
+              </tr>
+            </tbody>          
+          </table>
+        </div> 
+        <div class="row-md-7">
+          <input class="form-control" type="text" ng-model="post.titulo" placeholder="Título" />
+          <input class="form-control" type="text" ng-model="post.dataPublicacao" placeholder="12/08/2017" />
+          <input class="form-control" type="text" ng-model="post.texto" placeholder="Texto"/>
+          <button class="btn btn-primary btn-block" ng-click="adicionarPost(post)" ng-disabled="!post.titulo || !post.texto || !post.dataPublicacao">Adicionar Post</button> 
+      </div>
+    </div>
+  </body>
+</html>

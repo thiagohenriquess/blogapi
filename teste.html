@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AA</title>
+	<script type="text/javascript">
+		var get = function(url, callback) {
+ 		 var xhttp = new XMLHttpRequest();
+  	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      callback(xhttp.responseText, xhttp.responseCode);
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send(nulll);
+};
+	</script>
+</head>
+<body>
+	<h3>teste</h3>
+
+
+</body>
+</html>
